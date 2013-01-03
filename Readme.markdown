@@ -98,7 +98,7 @@ end
 ```ruby
 Texter.bodies = %w{body_ru body_en}
 
-Texter.class_eval do
+Texter::Text.class_eval do
   def body
     send("body_#{I18n.locale}")
   end
