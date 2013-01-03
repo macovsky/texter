@@ -1,0 +1,4 @@
+$("#popup").remove();
+$(".<%= @text.path_for_class %>").each(function(){
+  $(this).replaceWith($("<%= j(@text.body) %>"));
+});

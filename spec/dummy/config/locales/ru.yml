@@ -1,0 +1,11 @@
+ru:
+  texts:
+    _shared:
+      header:
+        title: Песня Винни-Пуха
+    pages:
+      index:
+        song: |
+          Вот *горшок* пустой!
+
+          Он предмет простой!

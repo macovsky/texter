@@ -1,0 +1,7 @@
+<%= simple_form_for @text, :remote => true do |f| %>
+  <%= f.input :tag_type, :as => :hidden %>
+  <% Texter.bodies.each do |body| %>
+    <%= f.input body %>
+  <% end %>
+  <%= f.submit "Сохранить", :disable_with => '✔ Сохраняется...' %>
+<% end %>

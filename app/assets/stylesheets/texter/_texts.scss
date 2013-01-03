@@ -1,0 +1,63 @@
+#popup {
+  z-index:100;
+  display:none;
+  position:fixed;
+  width:500px;
+  left:50%;
+  margin-left:-250px;
+  top:150px;
+  background:#fff;
+  border:5px solid #ccc;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+
+  .close {
+    background: image-url('texter/close-icon.gif') no-repeat;
+    z-index:2;
+    display:block;
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:16px;
+    height:16px;
+    cursor:pointer;
+  }
+
+  label, .title {
+    display:block;
+    margin-bottom:6px;
+    color: #000000;
+    abbr { color: red; }
+  }
+
+  .b-form-buttons {
+    position:relative;
+    margin-top:15px;
+  }
+
+  .input {
+    margin-bottom:20px;
+  }
+
+  #form {
+    padding:40px;
+
+    textarea {
+      width:410px;
+      height:180px;
+      border:1px solid #cacaca;
+      resize:none;
+    }
+  }
+}
+
+.js-edit {
+  cursor:pointer;
+
+  &:hover {
+    background:#fffb8f;
+  }
+}
