@@ -1,7 +1,10 @@
 # encoding: UTF-8
+require 'draper'
+
 module Texter
-  class TextDecorator < Draper::Base
+  class TextDecorator < Draper::Decorator
     decorates 'Texter::Text'
+    delegate_all
 
     def body
       return textile unless can_edit?

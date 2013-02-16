@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
 	s.add_dependency 'rails', '~> 3.2.9'
 	s.add_dependency 'sass-rails', '~> 3.2.3'
-	s.add_dependency 'draper'
+	s.add_dependency 'draper', '~> 1.1.0'
 	s.add_dependency 'RedCloth', '~> 4.2.9'
 	s.add_dependency 'simple_form'
   s.add_dependency 'art_typograph'
