@@ -1,5 +1,5 @@
 $(function(){
-	$('.js-edit').live('click', function(){
+	$('body').on('click', '.js-edit', function(){
 		EditText($(this));
 	});
 
@@ -20,13 +20,13 @@ $(function(){
 			}
 		});
 
-		popup.find('.close').on('click', function(){
+		popup.on('click', '.close', function(){
 			removePopup();
 		});
 
 		$.get(elem.data('url'), function(){
 			popup.fadeIn('fast', function(){
-				popup.find('textarea').filter(':first').focus();
+				popup.find('textarea:first').focus();
 			});
 		});
 	}
