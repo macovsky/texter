@@ -111,3 +111,7 @@ Texter::Text.class_eval do
   end
 end
 ```
+
+**Обновления**
+
+Читайте твитторд [Прогерского говна](http://twitter.com/programmingshit).
