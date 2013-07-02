@@ -1,0 +1,1 @@
+Texter.formatter = :textile

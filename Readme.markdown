@@ -1,15 +1,16 @@
-**Rails-engine для редактирования блоков текста.**
+### Rails-engine для редактирования блоков текста
 
-Начальная идея изложена в посте [«Турборедактирование кусков текста»](http://mindscan.msk.ru/programmingshit/edit-pieces-of-text.html), `Texter` развивает эту идею:
+Начальная идея изложена в посте [«Турборедактирование кусков текста»](http://mindscan.msk.ru/programmingshit/edit-pieces-of-text.html), `Texter` развивает эту идею.
 
-* Лёгкий вывод блочных и инлайновых текстов, отформатированных с помощью Textile
-* Дефолтные тексты в I18n
-* После редактирования тексты хранятся в базе, перед сохранением обрабатываются [Типографом Лебедева](http://www.artlebedev.ru/tools/typograf/)
+* Лёгкий вывод блочных и инлайновых текстов, отформатированных с помощью [Textile](http://redcloth.org/textile/), [Markdown](http://daringfireball.net/projects/markdown/syntax) или [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258)
+* Дефолтные тексты в `I18n`
+* При редактировании тексты сохраняются в базе
+* Подключаемые обработчики (препроцессоры) — можно легко подключить [Типограф Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/) или другой
 * Удобный, встроенный в сайт интерфейс редактирования
 
 ![](http://cl.ly/image/463H3d2J0R0T/Screen%20Shot%202013-01-02%20at%206.45.09%20PM.png)
 
-**Подключение**
+### Подключение
 
 ```ruby
 # Gemfile
@@ -30,18 +31,20 @@ rake db:migrate
 
 Должен быть подключен gem `jquery-rails`.
 
-**Как пользоваться**
+`Texter` по-умолчанию не имеет ограничений доступа.
+
+### Как пользоваться
 
 Пользоваться приходится следующими хелперами:
 
-* `block(path)` — возвращает блочный текст (параграфы обёрнуты в `p`)
-* `inline(path)` — инлайновый (`:lite_mode` в `RedCloth`)
+* `block(path, options = {})` — возвращает отформатированный текст для блочного элемента;
+* `inline(path, options = {})` — для инлайнового (особенности вывода указаны для каждого форматтера по отдельности).
 
-`path` — идентификатор текста в скопе `texts`:
+`path` — `I18n`-идентификатор текста в скопе `texter`:
 
 ```yaml
 ru:
-  texts:
+  texter:
     pages:
       index:
         header: Песня Винни-Пуха
@@ -67,38 +70,116 @@ ru:
 <div><p>Вот горшок пустой!</p><p>Он предмет простой!</p></div>
 ```
 
-**Ограничение доступа**
+В `options`-хеше можно передать `:locale` и `:formatter`.
 
-Чтобы выяснить, можно ли редактировать текст, `Texter` вызывает хелпер `text_can_be_edited?(text)`, который, в свою очередь, вызывает хелпер `moderator_signed_in?` — можете определить тот или другой в своём приложении.
+### Форматтеры
 
-Также ограничение доступа в контроллере `Texter::TextsController` происходит по умолчанию через метод `require_moderator!` — можете переопределить это поведение в `initializer` с помощью `Texter.controller_setup`, смотрите дефолтный пример в `lib/texter.rb`.
+`Texter` может форматировать текст следующими способами:
 
-**Многоязычность**
+**:simple** — *включен по умолчанию*
 
-По умолчанию `Texter` редактирует только один текст в текущей локали, но его можно быстро подкрутить для работы с многоязычными сайтами. Русская и английская версия минимальными усилиями:
+Использует хелпер [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258).
 
-После установки миграции поправим её: 
+Хелпер `inline` выдаёт текст без обработки.
+
+**:textile**
+
+Использует [RedCloth](https://github.com/jgarber/redcloth) (можно настроить rules и restrictions, смотрите `Texter::TextileFormatter`).
+
+Нужно установить джем:
+
+```ruby
+# Gemfile
+gem 'RedCloth', '~> 4.2.9'
+```
+
+Хелпер `inline` выдаёт весь текст, обработанный с помощью `:lite_mode` restriction.
+
+**:markdown**
+
+Использует [RDiscount](https://github.com/davidfstr/rdiscount) (можно настроить расширения, смотрите `Texter::MarkdownFormatter`).
+
+Нужно установить джем:
+
+```ruby
+# Gemfile
+gem 'rdiscount'
+```
+
+Хелпер `inline` выдаёт содержимое первого `<p>` или `<h\d>`.
+
+**Установить глобальный форматтер** можно так:
+
+```ruby
+# config/initializers/texter.rb
+Texter.formatter = :textile
+```
+
+Для создания других форматтеров смотрите базовый класс `Texter::Formatter`.
+
+### Обработчики
+
+`Texter` позволяет подключить несколько последовательных обработчиков текста (например для типографики), обработка происходит перед сохранением текста в базу.
+
+По дефолту используется единственный `Texter::CleanPreprocessor` (`:clean`), который просто удаляет символы `\r`.
+
+Также `Texter` имеет встроенную поддержку [Типографа Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/), подключить можно следующим образом:
+
+```ruby
+# Gemfile
+gem 'art_typograph', '~> 0.1.1'
+
+# config/initializers/texter.rb
+Texter.preprocessors << :art_typograph
+```
+
+Для создания других обработчиков смотрите базовый класс `Texter::Preprocessor`.
+
+### Ограничение доступа
+
+Чтобы выяснить и показать на сайте, можно ли редактировать текст, `Texter` вызывает метод `can_be_edited?` презентера `Texter::TextPresenter` (по-дефолту `true`, то есть _все могут редактировать_).
+
+Пример настройки доступа на уровне контроллера:
+
+```ruby
+# app/controllers/texter/texts_controller.rb
+require Texter::Engine.root.join("app/controllers/texter/texts_controller")
+
+class Texter::TextsController
+  before_filter :authenticate_user!
+end
+```
+
+### Многоязычность
+
+По умолчанию `Texter` редактирует текст в текущей локали, но его можно быстро подкрутить для работы с несколькими. Русская и английская версия минимальными усилиями:
+
+После установки миграции поправим её:
 
 ```ruby
 class CreateTexterTexts < ActiveRecord::Migration
   def change
     create_table :texter_texts do |t|
-      t.string :path, :null => false, :default => ''
+      t.string :path, :null => false
       t.text :body_ru
       t.text :body_en
-      t.timestamps
     end
+
     add_index :texter_texts, :path, :unique => true
   end
 end
 ```
 
-Настроим модель в приложении, например в `config/initializers/texter.rb`:
+Настроим модель:
 
 ```ruby
+# config/initializers/texter.rb
 Texter.bodies = %w{body_ru body_en}
 
-Texter::Text.class_eval do
+# app/models/texter/text.rb
+require Texter::Engine.root.join("app/models/texter/text")
+
+class Texter::Text
   def body
     send("body_#{I18n.locale}")
   end
@@ -112,6 +193,6 @@ Texter::Text.class_eval do
 end
 ```
 
-**Обновления**
+### Обновления
 
 Читайте твитторд [Прогерского говна](http://twitter.com/programmingshit).

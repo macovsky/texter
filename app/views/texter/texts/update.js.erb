@@ -1,4 +1,5 @@
+<% presenter = Texter::TextPresenter.new(@text, self) %>
 $("#popup").remove();
-$(".<%= @text.path_for_class %>").each(function(){
-  $(this).replaceWith($("<%= j(@text.body) %>"));
+$(".<%= presenter.path_for_class %>").each(function(){
+  $(this).replaceWith($("<%= j(presenter.body) %>"));
 });

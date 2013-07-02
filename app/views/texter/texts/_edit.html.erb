@@ -3,5 +3,5 @@
   <% Texter.bodies.each do |body| %>
     <%= f.input body %>
   <% end %>
-  <%= f.submit "Сохранить", :disable_with => '✔ Сохраняется...' %>
+  <%= f.submit Texter.translate('submit', :default => 'Сохранить'), :disable_with => Texter.translate('disable_with', :default => '✔ Сохраняется...') %>
 <% end %>

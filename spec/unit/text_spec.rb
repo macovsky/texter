@@ -20,11 +20,6 @@ describe Texter::Text do
       subject.should be_valid
     end
 
-    it 'is invalid if body was blank' do
-      subject.should_not be_valid
-      subject.should have(1).errors_on(:body)
-    end
-
     it 'is invalid if path was not unique' do
       Texter::Text.find_or_create_by_path(path, :body => 'something')
       subject.should_not be_valid

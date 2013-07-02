@@ -1,11 +1,25 @@
 ru:
-  texts:
+  texter:
     _shared:
       header:
         title: Песня Винни-Пуха
+
     pages:
       index:
         song: |
           Вот *горшок* пустой!
 
           Он предмет простой!
+
+        song_with_header: |
+          h2. Песня Винни-Пуха
+
+          Вот *горшок* пустой!
+
+          Он предмет простой!
+
+en:
+  texter:
+    pages:
+      index:
+        switch: In English

@@ -1,11 +1,3 @@
-require 'draper'
-require 'simple_form'
-require 'RedCloth'
-require 'art_typograph'
-require 'texter/typograph'
-require 'texter/clean_body'
-require 'texter/text_factory'
-
 module Texter
   class Engine < ::Rails::Engine
     isolate_namespace Texter

@@ -8,8 +8,6 @@ describe 'editing', :js => true do
   end
 
   it 'can be edited' do
-    Texter::Typograph.should_receive(:process).with(@text).and_return(@text)
-
     find('._shared-header-title').click
     fill_in 'text_body', :with => @text
     click_button 'Сохранить'

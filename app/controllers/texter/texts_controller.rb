@@ -2,8 +2,6 @@ require_dependency "texter/application_controller"
 
 module Texter
   class TextsController < ApplicationController
-    Texter.controller_setup.call(self)
-
     respond_to :js
     before_filter :load_text
 
@@ -11,10 +9,9 @@ module Texter
     end
 
     def update
-      Texter::CleanBody.new(@text).clean(Texter.bodies & @text.changed)
+      RunPreprocessorsOnText.call(@text)
 
-      if @text.valid? && Texter::Typograph.new(@text).process(Texter.bodies & @text.changed)
-        @text = TextDecorator.new(@text)
+      if @text.save
         render :update
       else
         render :edit

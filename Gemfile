@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 # Declare your gem's dependencies in texter.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -7,6 +7,7 @@ gemspec
 
 # gems used by the dummy application
 gem 'jquery-rails'
+gem 'sass-rails', '>= 3.2.3'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
