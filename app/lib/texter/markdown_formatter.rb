@@ -1,5 +1,3 @@
-require 'rdiscount'
-
 module Texter
   class MarkdownFormatter < Formatter
     # :smart - Enable SmartyPants processing.

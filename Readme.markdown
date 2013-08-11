@@ -2,7 +2,7 @@
 
 Начальная идея изложена в посте [«Турборедактирование кусков текста»](http://mindscan.msk.ru/programmingshit/edit-pieces-of-text.html), `Texter` развивает эту идею.
 
-* Лёгкий вывод блочных и инлайновых текстов, отформатированных с помощью [Textile](http://redcloth.org/textile/), [Markdown](http://daringfireball.net/projects/markdown/syntax) или [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258)
+* Лёгкий вывод блочных и инлайновых текстов, отформатированных с помощью [Textile](http://redcloth.org/textile/), [Markdown](http://daringfireball.net/projects/markdown/syntax) или [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258) или своего форматтера
 * Дефолтные тексты в `I18n`
 * При редактировании тексты сохраняются в базе
 * Подключаемые обработчики (препроцессоры) — можно легко подключить [Типограф Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/) или другой
@@ -143,7 +143,7 @@ Texter.preprocessors << :art_typograph
 
 ```ruby
 # app/controllers/texter/texts_controller.rb
-require Texter::Engine.root.join("app/controllers/texter/texts_controller")
+require_dependency Texter::Engine.root.join("app/controllers/texter/texts_controller").to_s
 
 class Texter::TextsController
   before_filter :authenticate_user!
@@ -177,7 +177,7 @@ end
 Texter.bodies = %w{body_ru body_en}
 
 # app/models/texter/text.rb
-require Texter::Engine.root.join("app/models/texter/text")
+require_dependency Texter::Engine.root.join("app/models/texter/text").to_s
 
 class Texter::Text
   def body

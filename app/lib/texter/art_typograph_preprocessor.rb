@@ -1,5 +1,3 @@
-require 'art_typograph'
-
 module Texter
   class ArtTypographPreprocessor < Preprocessor
     def call

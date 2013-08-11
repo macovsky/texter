@@ -1,5 +1,3 @@
-require 'RedCloth'
-
 module Texter
   class TextileFormatter < Formatter
     cattr_accessor :rules, :restrictions
