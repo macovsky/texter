@@ -19,7 +19,7 @@ describe Texter::MarkdownFormatter do
 
   context 'with options' do
     it 'should raise an error when unknown option was passed' do
-      expect { Texter::MarkdownFormatter.new("s", :whatever => true) }.to raise_error
+      expect { Texter::MarkdownFormatter.new("s", whatever: true) }.to raise_error
     end
 
     it 'should set default options' do
@@ -28,7 +28,7 @@ describe Texter::MarkdownFormatter do
     end
 
     it 'should include passed options' do
-      formatter = Texter::MarkdownFormatter.new("s", :extensions => [:smart])
+      formatter = Texter::MarkdownFormatter.new("s", extensions: [:smart])
       formatter.options[:extensions].should == [:smart]
     end
   end

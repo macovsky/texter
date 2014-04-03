@@ -21,7 +21,7 @@ describe Texter::Text do
     end
 
     it 'is invalid if path was not unique' do
-      Texter::Text.find_or_create_by_path(path, :body => 'something')
+      Texter::Text.find_or_create_by(path: path)
       subject.should_not be_valid
       subject.should have(1).errors_on(:path)
     end
@@ -34,7 +34,7 @@ describe Texter::Text do
     end
 
     it 'should fetch same object if it existed' do
-      subject.update_attributes(:body => 'Новый перевод')
+      subject.update_attributes(body: 'Новый перевод')
       Texter::Text.find_or_create_from_translations_by_path(path).body.should == 'Новый перевод'
     end
   end

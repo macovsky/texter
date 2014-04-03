@@ -15,7 +15,7 @@ module Texter
 
     def inline
       restrictions_with_lite_mode = (options[:restrictions] + [:lite_mode]).uniq
-      textile :restrictions => restrictions_with_lite_mode
+      textile restrictions: restrictions_with_lite_mode
     end
 
     def block
@@ -34,7 +34,7 @@ module Texter
 
     def reverse_merge_defaults
       options.assert_valid_keys(:rules, :restrictions)
-      options.reverse_merge!(:rules => rules, :restrictions => restrictions)
+      options.reverse_merge!(rules: rules, restrictions: restrictions)
     end
   end
 end

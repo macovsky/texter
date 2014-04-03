@@ -1,7 +1,7 @@
-<%= simple_form_for @text, :remote => true do |f| %>
-  <%= f.input :tag_type, :as => :hidden %>
+<%= simple_form_for @text, remote: true do |f| %>
+  <%= f.input :tag_type, as: :hidden %>
   <% Texter.bodies.each do |body| %>
     <%= f.input body %>
   <% end %>
-  <%= f.submit Texter.translate('submit', :default => 'Сохранить'), :disable_with => Texter.translate('disable_with', :default => '✔ Сохраняется...') %>
+  <%= f.submit Texter.translate('submit', default: 'Сохранить'), data: { disable_with: Texter.translate('disable_with', default: '✔ Сохраняется...') } %>
 <% end %>

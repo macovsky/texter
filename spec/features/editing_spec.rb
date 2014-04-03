@@ -1,15 +1,15 @@
 # encoding: UTF-8
 require 'spec_helper'
 
-describe 'editing', :js => true do
+describe 'editing', js: true do
   before do
     visit root_path
     @text = 'Песня Муми-Тролля'
   end
 
   it 'can be edited' do
-    find('._shared-header-title').click
-    fill_in 'text_body', :with => @text
+    find('.texter-_shared-header-title').click
+    fill_in 'text_body', with: @text
     click_button 'Сохранить'
 
     sleep(0.3)

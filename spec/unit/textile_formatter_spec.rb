@@ -19,7 +19,7 @@ describe Texter::TextileFormatter do
 
   context 'with options' do
     it 'should raise an error when unknown option was passed' do
-      expect { Texter::TextileFormatter.new("s", :whatever => true) }.to raise_error
+      expect { Texter::TextileFormatter.new("s", whatever: true) }.to raise_error
     end
 
     it 'should set default options' do
@@ -29,7 +29,7 @@ describe Texter::TextileFormatter do
     end
 
     it 'should include passed options' do
-      formatter = Texter::TextileFormatter.new("s", :rules => [])
+      formatter = Texter::TextileFormatter.new("s", rules: [])
       formatter.options[:rules].should == []
     end
   end

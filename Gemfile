@@ -10,7 +10,7 @@ gem 'art_typograph'
 
 # gems used by the dummy application
 gem 'jquery-rails'
-gem 'sass-rails', '>= 3.2.3'
+gem 'sass-rails', '~> 4.0.0'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or

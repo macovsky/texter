@@ -14,7 +14,7 @@ module Texter
     end
 
     def call
-      text = Texter::Text.find_or_initialize_by_path(full_path)
+      text = Texter::Text.find_or_initialize_by(path: full_path)
       text.tag_type = tag_type
       text
     end

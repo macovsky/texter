@@ -32,7 +32,7 @@ module Texter
 
     def reverse_merge_defaults
       options.assert_valid_keys(:extensions)
-      options.reverse_merge!(:extensions => extensions)
+      options.reverse_merge!(extensions: extensions)
     end
   end
 end

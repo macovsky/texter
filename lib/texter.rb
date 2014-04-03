@@ -27,7 +27,7 @@ module Texter
     end
 
     def translate(path, options = {})
-      I18n.t(path, { :scope => 'texter' }.merge(options))
+      I18n.t(path, { scope: 'texter' }.merge(options))
     end
   end
 end

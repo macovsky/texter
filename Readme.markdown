@@ -186,8 +186,8 @@ class Texter::Text
 
   def default_attributes
     {
-      :body_ru => get_body(:locale => :ru),
-      :body_en => get_body(:locale => :en)
+      body_ru: get_body(locale: :ru),
+      body_en: get_body(locale: :en)
     }
   end
 end

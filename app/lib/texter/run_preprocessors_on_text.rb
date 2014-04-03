@@ -5,7 +5,7 @@ module Texter
     attr_reader :text, :options
 
     # @param [Texter::Text] text
-    # @param [Hash] options (:force => true to force processing)
+    # @param [Hash] options ({ force: true } to force processing)
     def initialize(text, options = {})
       @text = text
       @options = options

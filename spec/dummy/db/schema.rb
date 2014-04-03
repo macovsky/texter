@@ -9,17 +9,17 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130102001138) do
+ActiveRecord::Schema.define(version: 20130102001138) do
 
-  create_table "texter_texts", :force => true do |t|
-    t.string   "path",       :default => "", :null => false
+  create_table "texter_texts", force: true do |t|
+    t.string   "path",       default: "", null: false
     t.text     "body"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "texter_texts", ["path"], :name => "index_texter_texts_on_path", :unique => true
+  add_index "texter_texts", ["path"], name: "index_texter_texts_on_path", unique: true
 
 end

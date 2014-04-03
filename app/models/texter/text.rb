@@ -5,11 +5,10 @@ module Texter
 
     attr_writer :tag_type
 
-    attr_accessible *Texter.bodies, :tag_type
-    validates_uniqueness_of :path, :allow_blank => false
+    validates_uniqueness_of :path, allow_blank: false
 
     def self.find_or_create_from_translations_by_path(path)
-      text = find_or_initialize_by_path(path)
+      text = find_or_initialize_by(path: path)
       text.new_record? && text.update_attributes(text.default_attributes)
       text
     end
@@ -27,7 +26,7 @@ module Texter
     end
 
     def default_attributes
-      { :body => get_body }
+      { body: get_body }
     end
   end
 end

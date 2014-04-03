@@ -11,18 +11,18 @@ module Texter
     def update
       RunPreprocessorsOnText.call(@text)
 
-      if @text.save
-        render :update
-      else
-        render :edit
-      end
+      render @text.save ? :update : :edit
     end
 
     private
 
     def load_text
       @text = Text.find_or_create_from_translations_by_path(params[:id])
-      @text.attributes = params[:text]
+      @text.attributes = resource_params.except(:id)
+    end
+
+    def resource_params
+      params.require(:text).permit(*Texter.bodies, :tag_type)
     end
   end
 end

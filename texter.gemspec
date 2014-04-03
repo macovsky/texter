@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
 
   s.post_install_message = "Texter 1.0.0 is backwards incompatible, please take a look at the changelog."
 
-  s.add_dependency 'rails', '>= 3.2.9'
-  s.add_dependency 'sass-rails', '>= 3.2.3'
+  s.add_dependency 'rails', '>= 4.0.0'
+  s.add_dependency 'sass-rails', '~> 4.0.0'
   s.add_dependency 'simple_form'
 
   s.add_development_dependency 'rspec-rails', '~> 2.12'
