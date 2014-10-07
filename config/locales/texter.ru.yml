@@ -3,8 +3,3 @@ ru:
     edit: Редактировать
     submit: Сохранить
     disable_with: '✔ Сохраняется...'
-
-  simple_form:
-    labels:
-      text:
-        body: Текст

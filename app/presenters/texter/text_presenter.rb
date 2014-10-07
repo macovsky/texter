@@ -27,13 +27,13 @@ module Texter
     end
 
     def path_for_class
-      "texter-" + path.gsub(/\./, '-')
+      path.gsub(/\./, '-')
     end
 
     private
 
     def formatter
-      Texter.find_formatter(options[:formatter] || Texter.formatter)
+      Texter.find_formatter(options[:formatter] || Texter.configuration.formatter)
     end
 
     def content_tag_name
@@ -44,8 +44,8 @@ module Texter
     end
 
     def formatted
-      body = get_body(locale_options)
-      body = Texter.translate("edit", locale_options.merge(default: 'Редактировать')) if can_be_edited? && body.blank?
+      body = get_body
+      body = Texter.t("edit", locale_options.merge(default: 'Редактировать')) if can_be_edited? && body.blank?
       formatter.new(body, options[:formatter_options] || {}).send(tag_type)
     end
 

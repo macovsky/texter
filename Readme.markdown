@@ -112,7 +112,9 @@ gem 'rdiscount'
 
 ```ruby
 # config/initializers/texter.rb
-Texter.formatter = :textile
+Texter.configure do |config|
+  config.formatter = :textile
+end
 ```
 
 Для создания других форматтеров смотрите базовый класс `Texter::Formatter`.
@@ -130,7 +132,9 @@ Texter.formatter = :textile
 gem 'art_typograph', '~> 0.1.1'
 
 # config/initializers/texter.rb
-Texter.preprocessors << :art_typograph
+Texter.configure do |config|
+  config.preprocessors = [:clean, :art_typograph]
+end
 ```
 
 Для создания других обработчиков смотрите базовый класс `Texter::Preprocessor`.
@@ -147,49 +151,6 @@ require_dependency Texter::Engine.root.join("app/controllers/texter/texts_contro
 
 class Texter::TextsController
   before_filter :authenticate_user!
-end
-```
-
-### Многоязычность
-
-По умолчанию `Texter` редактирует текст в текущей локали, но его можно быстро подкрутить для работы с несколькими. Русская и английская версия минимальными усилиями:
-
-После установки миграции поправим её:
-
-```ruby
-class CreateTexterTexts < ActiveRecord::Migration
-  def change
-    create_table :texter_texts do |t|
-      t.string :path, :null => false
-      t.text :body_ru
-      t.text :body_en
-    end
-
-    add_index :texter_texts, :path, :unique => true
-  end
-end
-```
-
-Настроим модель:
-
-```ruby
-# config/initializers/texter.rb
-Texter.bodies = %w{body_ru body_en}
-
-# app/models/texter/text.rb
-require_dependency Texter::Engine.root.join("app/models/texter/text").to_s
-
-class Texter::Text
-  def body
-    send("body_#{I18n.locale}")
-  end
-
-  def default_attributes
-    {
-      body_ru: get_body(locale: :ru),
-      body_en: get_body(locale: :en)
-    }
-  end
 end
 ```
 

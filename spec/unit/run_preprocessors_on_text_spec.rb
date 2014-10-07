@@ -7,7 +7,7 @@ describe Texter::RunPreprocessorsOnText do
   let(:text) { Texter::Text.new(body: body) }
 
   before {
-    Texter.should_receive(:preprocessors).and_return([:clean, :art_typograph])
+    Texter.configuration.should_receive(:preprocessors).and_return([:clean, :art_typograph])
     ArtTypograph.should_receive(:process).with(body.strip).and_return(typographized_body)
   }
 

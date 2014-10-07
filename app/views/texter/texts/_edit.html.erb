@@ -1,7 +1,5 @@
-<%= simple_form_for @text, remote: true do |f| %>
-  <%= f.input :tag_type, as: :hidden %>
-  <% Texter.bodies.each do |body| %>
-    <%= f.input body %>
-  <% end %>
-  <%= f.submit Texter.translate('submit', default: 'Сохранить'), data: { disable_with: Texter.translate('disable_with', default: '✔ Сохраняется...') } %>
+<%= form_for @text, url: text_path(@text), remote: true, method: :put do |f| %>
+  <%= f.hidden_field :tag_type %>
+  <%= f.text_area :body %>
+  <%= f.submit Texter.t('submit', default: 'Сохранить'), data: { disable_with: Texter.t('disable_with', default: '✔ Сохраняется...') } %>
 <% end %>

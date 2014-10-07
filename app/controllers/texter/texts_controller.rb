@@ -6,9 +6,12 @@ module Texter
     before_filter :load_text
 
     def edit
+      @text.tag_type = resource_params[:tag_type]
     end
 
     def update
+      @text.attributes = resource_params
+
       RunPreprocessorsOnText.call(@text)
 
       render @text.save ? :update : :edit
@@ -17,12 +20,11 @@ module Texter
     private
 
     def load_text
-      @text = Text.find_or_create_from_translations_by_path(params[:id])
-      @text.attributes = resource_params.except(:id)
+      @text = Text.find_or_initialize_by_path(params[:id])
     end
 
     def resource_params
-      params.require(:text).permit(*Texter.bodies, :tag_type)
+      params.require(:text).permit(:body, :tag_type)
     end
   end
 end

@@ -8,7 +8,7 @@ describe 'editing', js: true do
   end
 
   it 'can be edited' do
-    find('.texter-_shared-header-title').click
+    find('.ru-texter-_shared-header-title').click
     fill_in 'text_body', with: @text
     click_button 'Сохранить'
 

@@ -1,15 +1,16 @@
 module Texter
   class Text < ActiveRecord::Base
-    BLOCK = 'block'
-    TAG_TYPES = [BLOCK, 'inline']
+    BLOCK     = 'block'
+    INLINE    = 'inline'
+    TAG_TYPES = [BLOCK, INLINE]
 
     attr_writer :tag_type
 
     validates_uniqueness_of :path, allow_blank: false
 
-    def self.find_or_create_from_translations_by_path(path)
+    def self.find_or_initialize_by_path(path)
       text = find_or_initialize_by(path: path)
-      text.new_record? && text.update_attributes(text.default_attributes)
+      text.body = text.get_body unless text.persisted?
       text
     end
 
@@ -17,16 +18,20 @@ module Texter
       path
     end
 
-    def get_body(options = {})
-      persisted? ? body : Texter.translate(path, options)
+    def get_body
+      persisted? ? body : get_body_from_i18n
     end
 
     def tag_type
       TAG_TYPES.include?(@tag_type.to_s) ? @tag_type : BLOCK
     end
 
-    def default_attributes
-      { body: get_body }
+    private
+
+    def get_body_from_i18n
+      (match = path.match(%r{\A(#{I18n.available_locales.join("|")})\.})) || raise("cannot extract locale from #{path}")
+      locale = match[1]
+      I18n.t path.sub(%r{\A#{locale}.}, ''), locale: locale, default: ""
     end
   end
 end

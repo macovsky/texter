@@ -12,18 +12,10 @@ module Texter
     end
 
     def call
-      attributes.each do |attr|
-        body = text.send(attr)
-        processed = Texter.preprocessors.inject(body) { |memo, preprocessor| Texter.find_preprocessor(preprocessor).call(memo) }
-        text.send "#{attr}=", processed
+      if text.body_changed? || options[:force]
+        processed = Texter.configuration.preprocessors.inject(text.body) { |memo, preprocessor| Texter.find_preprocessor(preprocessor).call(memo) }
+        text.body = processed
       end
-    end
-
-    private
-
-    def attributes
-      return Texter.bodies if options[:force]
-      Texter.bodies & text.changed
     end
   end
 end

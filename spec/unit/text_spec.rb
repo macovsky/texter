@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe Texter::Text do
-  let(:path) { '_shared.header.title' }
+  let(:path) { 'ru.texter._shared.header.title' }
   let(:title) { 'Песня Винни-Пуха' }
   subject {
     text = Texter::Text.new
@@ -27,15 +27,15 @@ describe Texter::Text do
     end
   end
 
-  context '.find_or_create_from_translations_by_path' do
+  context '.find_or_initialize_by_path' do
     it 'should get text from i18n on creation' do
-      text = Texter::Text.find_or_create_from_translations_by_path(path)
-      text.reload.body.should == title
+      text = Texter::Text.find_or_initialize_by_path(path)
+      text.body.should == title
     end
 
     it 'should fetch same object if it existed' do
       subject.update_attributes(body: 'Новый перевод')
-      Texter::Text.find_or_create_from_translations_by_path(path).body.should == 'Новый перевод'
+      Texter::Text.find_or_initialize_by_path(path).body.should == 'Новый перевод'
     end
   end
 

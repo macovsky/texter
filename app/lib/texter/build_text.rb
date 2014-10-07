@@ -2,15 +2,17 @@ module Texter
   class BuildText
     include CallableClass
 
-    attr_reader :path, :tag_type, :virtual_path
+    attr_reader :path, :tag_type, :virtual_path, :options
 
     # @param [String] path
     # @param [Symbol] tag_type (:block, :inline)
     # @param [String, NilClass] virtual_path
-    def initialize(path, tag_type, virtual_path)
+    # @param [Hash] options
+    def initialize(path, tag_type, virtual_path, options)
       @path         = path
       @tag_type     = tag_type
       @virtual_path = virtual_path
+      @options      = options
     end
 
     def call
@@ -22,6 +24,11 @@ module Texter
     private
 
     def full_path
+      locale = (options[:locale] || I18n.locale).to_s
+      [locale, Texter.configuration.i18n_scope, i18n_path].join(".")
+    end
+
+    def i18n_path
       return path unless relative_path?
 
       if virtual_path

@@ -9,7 +9,7 @@ module Texter
     end
 
     def display_text(path, tag_type, options = {})
-      text = Texter::BuildText.call(path, tag_type, @virtual_path)
+      text = Texter::BuildText.call(path, tag_type, @virtual_path, options)
       presenter = Texter::TextPresenter.new(text, self, options)
       presenter.body
     end
