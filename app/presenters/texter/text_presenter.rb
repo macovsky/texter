@@ -30,6 +30,19 @@ module Texter
       path.gsub(/\./, '-')
     end
 
+    def can_be_edited?
+      can = Texter.configuration.can_be_edited
+
+      case can
+        when Symbol
+          h.send(can)
+        when Proc
+          can.call(text, h)
+        else
+          can
+      end
+    end
+
     private
 
     def formatter
@@ -47,10 +60,6 @@ module Texter
       body = get_body
       body = Texter.t("edit", locale_options.merge(default: 'Редактировать')) if can_be_edited? && body.blank?
       formatter.new(body, options[:formatter_options] || {}).send(tag_type)
-    end
-
-    def can_be_edited?
-      true
     end
 
     def locale_options
