@@ -1,11 +1,5 @@
 module Texter
   class Text < ActiveRecord::Base
-    BLOCK     = 'block'
-    INLINE    = 'inline'
-    TAG_TYPES = [BLOCK, INLINE]
-
-    attr_writer :tag_type
-
     validates_uniqueness_of :path, allow_blank: false
 
     def self.find_or_initialize_by_path(path)
@@ -20,10 +14,6 @@ module Texter
 
     def get_body
       persisted? ? body : get_body_from_i18n
-    end
-
-    def tag_type
-      TAG_TYPES.include?(@tag_type.to_s) ? @tag_type : BLOCK
     end
 
     private

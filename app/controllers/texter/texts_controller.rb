@@ -7,7 +7,6 @@ module Texter
     before_filter :ensure_text_can_be_edited
 
     def edit
-      @text.tag_type = resource_params[:tag_type]
     end
 
     def update
@@ -16,6 +15,10 @@ module Texter
       RunPreprocessorsOnText.call(@text)
 
       render @text.save ? :update : :edit
+    end
+
+    def show
+      render layout: false
     end
 
     private
@@ -30,7 +33,7 @@ module Texter
     end
 
     def resource_params
-      params.require(:text).permit(:body, :tag_type)
+      params.require(:text).permit(:body)
     end
   end
 end

@@ -2,23 +2,19 @@ module Texter
   class BuildText
     include CallableClass
 
-    attr_reader :path, :tag_type, :virtual_path, :options
+    attr_reader :path, :virtual_path, :options
 
     # @param [String] path
-    # @param [Symbol] tag_type (:block, :inline)
     # @param [String, NilClass] virtual_path
     # @param [Hash] options
-    def initialize(path, tag_type, virtual_path, options)
+    def initialize(path, virtual_path, options)
       @path         = path
-      @tag_type     = tag_type
       @virtual_path = virtual_path
       @options      = options
     end
 
     def call
-      text = Texter::Text.find_or_initialize_by(path: full_path)
-      text.tag_type = tag_type
-      text
+      Texter::Text.find_or_initialize_by(path: full_path)
     end
 
     private

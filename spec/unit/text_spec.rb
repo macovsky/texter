@@ -38,18 +38,4 @@ describe Texter::Text do
       Texter::Text.find_or_initialize_by_path(path).body.should == 'Новый перевод'
     end
   end
-
-  context '#tag_type' do
-    it 'returns same tag type if it was valid' do
-      ['inline', :inline, 'block', :block].each do |tag_type|
-        subject.tag_type = tag_type
-        subject.tag_type.should == tag_type
-      end
-    end
-
-    it 'returns block if tag_type was invalid' do
-      subject.tag_type = "div"
-      subject.tag_type.should == "block"
-    end
-  end
 end
