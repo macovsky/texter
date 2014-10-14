@@ -3,10 +3,13 @@ require 'texter/configuration'
 
 module Texter
   class <<self
-    attr_accessor :configuration
+    attr_writer :configuration
+
+    def configuration
+      @configuration ||= Configuration.new
+    end
 
     def configure
-      self.configuration ||= Configuration.new
       yield(configuration)
     end
 
