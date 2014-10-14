@@ -1,11 +1,9 @@
 module Texter
   class Formatter
-    attr_reader :body, :options
+    attr_reader :body
 
-    def initialize(body, options = {})
+    def initialize(body)
       @body = body
-      @options = options.dup
-      reverse_merge_defaults
     end
 
     # @return [String, NilClass]
@@ -16,11 +14,6 @@ module Texter
     # @return [String, NilClass]
     def block
       raise NotImplementedError
-    end
-
-    protected
-
-    def reverse_merge_defaults
     end
   end
 end

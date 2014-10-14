@@ -10,13 +10,13 @@ module Texter
       @h       = h
       @options = options
 
-      options.assert_valid_keys(:locale, :formatter, :formatter_options)
+      options.assert_valid_keys(:locale, :formatter)
     end
 
     def body
-      return formatted unless can_be_edited?
+      return formatted.html_safe unless can_be_edited?
 
-      h.content_tag(content_tag_name, formatted, {
+      h.content_tag(content_tag_name, formatted.html_safe, {
         data: {
           url: h.texter.edit_text_path(path, :js, text: {
             tag_type: tag_type
@@ -59,7 +59,7 @@ module Texter
     def formatted
       body = get_body
       body = Texter.t("edit", locale_options.merge(default: 'Редактировать')) if can_be_edited? && body.blank?
-      formatter.new(body, options[:formatter_options] || {}).send(tag_type)
+      formatter.new(body).send(tag_type)
     end
 
     def locale_options

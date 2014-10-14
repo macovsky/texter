@@ -16,20 +16,4 @@ describe Texter::MarkdownFormatter do
       formatter.block.should == "<p>Песня <em>Винни-Пуха</em></p>\n"
     end
   end
-
-  context 'with options' do
-    it 'should raise an error when unknown option was passed' do
-      expect { Texter::MarkdownFormatter.new("s", whatever: true) }.to raise_error
-    end
-
-    it 'should set default options' do
-      formatter = Texter::MarkdownFormatter.new("s")
-      formatter.options[:extensions].should == formatter.extensions
-    end
-
-    it 'should include passed options' do
-      formatter = Texter::MarkdownFormatter.new("s", extensions: [:smart])
-      formatter.options[:extensions].should == [:smart]
-    end
-  end
 end

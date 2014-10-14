@@ -31,7 +31,7 @@ module Texter
     def get_body_from_i18n
       (match = path.match(%r{\A(#{I18n.available_locales.join("|")})\.})) || raise("cannot extract locale from #{path}")
       locale = match[1]
-      I18n.t path.sub(%r{\A#{locale}.}, ''), locale: locale, default: ""
+      I18n.t(path.sub(%r{\A#{locale}.}, ''), locale: locale, default: "").strip
     end
   end
 end
