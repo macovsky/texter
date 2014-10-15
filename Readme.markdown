@@ -1,46 +1,43 @@
 ### Rails-engine для редактирования блоков текста
 
-Начальная идея изложена в посте [«Турборедактирование кусков текста»](http://mindscan.msk.ru/programmingshit/edit-pieces-of-text.html), `Texter` развивает эту идею.
-
-* Лёгкий вывод блочных и инлайновых текстов, отформатированных с помощью [Textile](http://redcloth.org/textile/), [Markdown](http://daringfireball.net/projects/markdown/syntax) или [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258) или своего форматтера
-* Дефолтные тексты в `I18n`
+* Лёгкий вывод блочных и инлайновых текстов, отформатированных с помощью [Textile](http://redcloth.org/textile/), [Markdown](http://daringfireball.net/projects/markdown/syntax), [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258) или своего форматтера
+* Дефолтные тексты в `I18n` — сайт легко задеплоить, не заморачиваясь с миграциями/seeds
 * При редактировании тексты сохраняются в базе
-* Подключаемые обработчики (препроцессоры) — можно легко подключить [Типограф Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/) или другой
+* Подключаемые обработчики (препроцессоры) — встроенная, опциональная поддержка [Типографа Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/)
 * Удобный, встроенный в сайт интерфейс редактирования
 
-![](http://cl.ly/image/463H3d2J0R0T/Screen%20Shot%202013-01-02%20at%206.45.09%20PM.png)
+![](http://cl.ly/image/113R3A2v2n2t/Image%202014-10-14%20at%208.34.56%20PM.png)
 
-### Подключение
+### Установка
 
 ```ruby
-# Gemfile
 gem 'texter'
-
-# config/routes.rb
-mount Texter::Engine => '/texter'
 ```
 
-Миграция
-
 ```shell
+rails g texter:install
 rake texter:install:migrations
 rake db:migrate
 ```
 
-В assets pipeline нужно добавить `texter/texts.js` и `texter/_texts.scss` соответственно.
+Генератор `texter:install`:
 
-Должен быть подключен gem `jquery-rails`.
+* создаёт `config/initializers/texter.rb` — настройки доступа к редактированию текстов (по умолчанию возможность закрыта), форматтера, обработчиков (смотрите комментарии в файле);
+* создаёт `config/locales/texter.yml` — дефолтные тексты;
+* подключает `Texter::Engine` в `config/routes.rb`.
 
-`Texter` по-умолчанию не имеет ограничений доступа.
+В ассеты нужно добавить `texter/texts.js` и `texter/_texts.scss` соответственно.
+
+Должны быть подключены `jquery` и `jquery_ujs` (`jquery-rails`).
 
 ### Как пользоваться
 
 Пользоваться приходится следующими хелперами:
 
 * `block(path, options = {})` — возвращает отформатированный текст для блочного элемента;
-* `inline(path, options = {})` — для инлайнового (особенности вывода указаны для каждого форматтера по отдельности).
+* `inline(path, options = {})` — для инлайнового (особенности вывода указаны для каждого форматтера по отдельности).
 
-`path` — `I18n`-идентификатор текста в скопе `texter`:
+`path` — `I18n`-идентификатор текста в скопе `texter` (можно настроить):
 
 ```yaml
 ru:
@@ -76,46 +73,11 @@ ru:
 
 `Texter` может форматировать текст следующими способами:
 
-**:simple** — *включен по умолчанию*
-
-Использует хелпер [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258).
-
-Хелпер `inline` выдаёт текст без обработки.
-
-**:textile**
-
-Использует [RedCloth](https://github.com/jgarber/redcloth) (можно настроить rules и restrictions, смотрите `Texter::TextileFormatter`).
-
-Нужно установить джем:
-
-```ruby
-# Gemfile
-gem 'RedCloth', '~> 4.2.9'
-```
-
-Хелпер `inline` выдаёт весь текст, обработанный с помощью `:lite_mode` restriction.
-
-**:markdown**
-
-Использует [RDiscount](https://github.com/davidfstr/rdiscount) (можно настроить расширения, смотрите `Texter::MarkdownFormatter`).
-
-Нужно установить джем:
-
-```ruby
-# Gemfile
-gem 'rdiscount'
-```
-
-Хелпер `inline` выдаёт содержимое первого `<p>` или `<h\d>`.
-
-**Установить глобальный форматтер** можно так:
-
-```ruby
-# config/initializers/texter.rb
-Texter.configure do |config|
-  config.formatter = :textile
-end
-```
+| Форматтер | Зависимости | Хелпер `inline` выдаёт |
+| :-------- | :------------- | :--------------------------  |
+| **:simple:** _по умолчанию_ | нет, используется встроенный рельсовый хелпер [simple_format](https://github.com/rails/rails/blob/21b55e4462c2a9d3a6420d2754ab63a9d6f01da8/actionpack/lib/action_view/helpers/text_helper.rb#L258) | текст без обработки |
+| **:textile** | gem '[RedCloth](https://github.com/jgarber/redcloth)' | весь текст, обработанный с помощью `:lite_mode` |
+| **:markdown** | gem '[rdiscount](https://github.com/davidfstr/rdiscount)' | содержимое первого `<p>` или `<h\d>` |
 
 Для создания других форматтеров смотрите базовый класс `Texter::Formatter`.
 
@@ -125,34 +87,9 @@ end
 
 По дефолту используется единственный `Texter::CleanPreprocessor` (`:clean`), который просто удаляет символы `\r`.
 
-Также `Texter` имеет встроенную поддержку [Типографа Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/), подключить можно следующим образом:
-
-```ruby
-# Gemfile
-gem 'art_typograph', '~> 0.1.1'
-
-# config/initializers/texter.rb
-Texter.configure do |config|
-  config.preprocessors = [:clean, :art_typograph]
-end
-```
+Также `Texter` имеет встроенную поддержку [Типографа Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/), смотрите `config/initializers/texter.rb`.
 
 Для создания других обработчиков смотрите базовый класс `Texter::Preprocessor`.
-
-### Ограничение доступа
-
-Чтобы выяснить и показать на сайте, можно ли редактировать текст, `Texter` вызывает метод `can_be_edited?` презентера `Texter::TextPresenter` (по-дефолту `true`, то есть _все могут редактировать_).
-
-Пример настройки доступа на уровне контроллера:
-
-```ruby
-# app/controllers/texter/texts_controller.rb
-require_dependency Texter::Engine.root.join("app/controllers/texter/texts_controller").to_s
-
-class Texter::TextsController
-  before_filter :authenticate_user!
-end
-```
 
 ### Обновления
 

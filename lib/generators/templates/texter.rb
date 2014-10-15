@@ -1,11 +1,13 @@
 # encoding: UTF-8
 Texter.configure do |config|
-  # по умолчанию texter не разрешает редактировать тексты
-  # можно использовать следующие значения:
+  # можно ли редактировать текст?
+  # по умолчанию texter не разрешает редактировать тексты (false)
   #
-  # * Symbol (хелпер доступный в views/controller, например :current_user — редактировать смогут только залогиненные пользователи)
-  # * Proc (от двух параметров text (Texter::Text) и h — контекст views/controller, например ->(text, h) { h.current_user })
-  # * любое другое значение, будет интерпретироваться как true/false выражение
+  # варианты:
+  #
+  # * Symbol — имя хелпера, доступного в views/controller, например :current_user — редактировать смогут только залогиненные пользователи
+  # * Proc — от двух параметров text (Texter::Text) и h (контекст views/controller), например ->(text, h) { h.current_user }
+  # * любое другое значение будет интерпретироваться как логическое выражение
   #
   # смотрите Texter::TextPresenter#can_be_edited?
   # config.can_be_edited = false
