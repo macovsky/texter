@@ -1,4 +1,4 @@
 <%= form_for @text, url: text_path(@text), remote: true, method: :put do |f| %>
   <%= f.text_area :body %>
-  <%= f.submit Texter.t('submit', default: 'Сохранить'), data: { disable_with: Texter.t('disable_with', default: '✔ Сохраняется...') } %>
+  <%= f.submit Texter.t('submit', default: 'Сохранить'), class: "pure-button", data: { disable_with: Texter.t('disable_with', default: '✔ Сохраняется...') } %>
 <% end %>

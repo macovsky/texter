@@ -22,7 +22,7 @@ module Texter
           tag_type: tag_type,
           formatter: formatter_name(options)
         },
-        class: "js-edit #{path_for_class}"
+        class: "texter-edit #{path_for_class}"
       })
     end
 

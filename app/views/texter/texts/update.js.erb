@@ -1,4 +1,5 @@
-$("#popup").remove();
+$("#texter-popup").remove();
+
 <% presenter = Texter::TextPresenter.new(@text, self) %>
 
 $(".<%= presenter.path_for_class %>").each(function(){
