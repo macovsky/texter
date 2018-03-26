@@ -11,7 +11,7 @@ module Texter
     protected
 
     def textile(restrictions = [])
-      return if body.blank?
+      return "" if body.blank?
       textile = ::RedCloth.new(body, [*restrictions, :no_span_caps])
       textile.to_html
     end

@@ -90,7 +90,3 @@ ru:
 Также `Texter` имеет встроенную поддержку [Типографа Лебедева](http://www.artlebedev.ru/tools/typograf/webservice/), смотрите `config/initializers/texter.rb`.
 
 Для создания других обработчиков смотрите базовый класс `Texter::Preprocessor`.
-
-### Обновления
-
-Читайте твитторд [Прогерского говна](http://twitter.com/programmingshit).

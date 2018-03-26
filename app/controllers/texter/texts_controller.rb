@@ -3,8 +3,8 @@ require_dependency "texter/application_controller"
 module Texter
   class TextsController < ApplicationController
     respond_to :js
-    before_filter :load_text
-    before_filter :ensure_text_can_be_edited
+    before_action :load_text
+    before_action :ensure_text_can_be_edited
 
     def edit
     end
